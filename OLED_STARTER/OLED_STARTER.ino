@@ -7,8 +7,12 @@ Adafruit_SSD1306 display(128, 64, &Wire, -1);
 
 
 void setup() {
+  Wire.begin();
+  Wire.setWireTimeout(10000);
   Serial.begin(9600);
-  display.begin(SSD1306_SWITCHCAPVCC, 0x3D); //could be 0x3C
+
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C); //could be 0x3C
+  
   display.clearDisplay();
 }//end setup
 

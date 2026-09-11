@@ -6,10 +6,73 @@
     <script src="saveGifToArray.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
     <meta charset="utf-8" />
-
+    <title>GIF to OLED Converter</title>
   </head>
   <body>
     <main>
+      <h1>GIF &rarr; OLED Converter</h1>
+
+      <div class="controls">
+        <div class="row">
+          <label class="file-label">
+            GIF: <input type="file" id="gifInput" accept=".gif,image/gif">
+          </label>
+          <label class="invert-label">
+            <input type="checkbox" id="invertCheckbox" checked>
+            Invert
+          </label>
+          <label class="rotate-label">
+            <input type="checkbox" id="rotateCheckbox">
+            Rotate 90&deg; (landscape &rarr; portrait)
+          </label>
+        </div>
+        <div class="sliders-grid">
+          <label class="threshold-label">
+            Threshold: <span id="thresholdValue">128</span>
+            <input type="range" id="thresholdSlider" min="0" max="255" value="128">
+          </label>
+          <label class="thickness-label">
+            Thickness: <span id="thicknessValue">0</span>
+            <input type="range" id="thicknessSlider" min="-5" max="5" value="0" step="1">
+          </label>
+          <label class="frame-label">
+            Start frame: <span id="startFrameValue">0</span>
+            <input type="range" id="startFrameSlider" min="0" max="0" value="0" step="1">
+          </label>
+          <label class="frame-label">
+            End frame: <span id="endFrameValue">0</span>
+            <input type="range" id="endFrameSlider" min="0" max="0" value="0" step="1">
+          </label>
+        </div>
+      </div>
+
+      <p id="status">Choose a GIF to begin.</p>
+
+      <div class="preview-row">
+        <div class="preview-col">
+          <p class="preview-label">Source (drag box to move, drag corners to resize/reshape)</p>
+          <div id="source-wrapper">
+            <img id="sourceImg" alt="Source GIF">
+            <div id="cropRect">
+              <div class="handle" data-corner="tl"></div>
+              <div class="handle" data-corner="tr"></div>
+              <div class="handle" data-corner="bl"></div>
+              <div class="handle" data-corner="br"></div>
+            </div>
+          </div>
+        </div>
+        <div class="preview-col">
+          <p class="preview-label">OLED preview</p>
+          <div id="canvas-container"></div>
+        </div>
+      </div>
+
+      <div class="output-section">
+        <p class="preview-label">Generated Arduino code</p>
+        <button id="copyBtn" disabled>Copy to clipboard</button>
+        <textarea id="output" spellcheck="false" readonly
+          placeholder="Generated Arduino code will appear here once a GIF is processed..."></textarea>
+      </div>
     </main>
     <script src="sketch.js"></script>
   </body>

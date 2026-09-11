@@ -1,7 +1,160 @@
 html, body {
   margin: 0;
   padding: 0;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #1e1e1e;
+  color: #eee;
 }
-canvas {
+
+main {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 16px 24px;
+}
+
+h1 {
+  font-size: 1.2em;
+  margin: 0 0 12px;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.controls .row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.sliders-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 20px;
+}
+
+.file-label, .invert-label, .rotate-label, .threshold-label, .thickness-label, .frame-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9em;
+}
+
+.threshold-label input[type="range"],
+.thickness-label input[type="range"],
+.frame-label input[type="range"] {
+  flex: 1;
+  min-width: 0;
+}
+
+#status {
+  color: #aaa;
+  min-height: 1.2em;
+  font-size: 0.9em;
+  margin: 0 0 8px;
+}
+
+.preview-row {
+  display: flex;
+  gap: 16px;
+  max-width: 640px;
+  margin-bottom: 16px;
+}
+
+.preview-col {
+  flex: 1;
+  min-width: 0;
+}
+
+.preview-label {
+  margin: 0 0 4px;
+  color: #aaa;
+  font-size: 0.8em;
+}
+
+#source-wrapper {
+  position: relative;
+  border: 1px solid #444;
+  user-select: none;
+  line-height: 0;
+  background: #111;
+}
+
+#sourceImg {
   display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+#cropRect {
+  position: absolute;
+  border: 2px solid #4da3ff;
+  background: rgba(77, 163, 255, 0.15);
+  box-sizing: border-box;
+  cursor: move;
+}
+
+.handle {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  margin: -6px;
+  background: #4da3ff;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+.handle[data-corner="tl"] { left: 0; top: 0; cursor: nwse-resize; }
+.handle[data-corner="tr"] { left: 100%; top: 0; cursor: nesw-resize; }
+.handle[data-corner="bl"] { left: 0; top: 100%; cursor: nesw-resize; }
+.handle[data-corner="br"] { left: 100%; top: 100%; cursor: nwse-resize; }
+
+#canvas-container {
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  border: 1px solid #444;
+  overflow: hidden;
+}
+
+#canvas-container canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+
+.output-section {
+  max-width: 640px;
+}
+
+#copyBtn {
+  display: block;
+  margin-bottom: 8px;
+  padding: 6px 14px;
+  cursor: pointer;
+}
+
+#copyBtn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+#output {
+  width: 100%;
+  height: 320px;
+  box-sizing: border-box;
+  font-family: "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12px;
+  background: #111;
+  color: #ddd;
+  border: 1px solid #444;
+  padding: 10px;
+  resize: vertical;
 }

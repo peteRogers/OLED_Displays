@@ -209,3 +209,35 @@ Web link to convert images to show on screens [Make BITMAP IMAGES](https://javl.
 Get animated icons and emojis to show on OLED [WOKWI animator](https://animator.wokwi.com/)
 
 List of u8g2 fonts [U8G2 fonts](https://github.com/olikraus/u8g2/wiki/fntlist8)
+
+---
+
+## Troubleshooting: blank screen on Arduino UNO R4 (SPI)
+
+If an SSD1306 wired for SPI (hardware or software) shows nothing on an
+UNO R4 (WiFi or Minima) but works fine on other boards, this is a known
+`Adafruit_SSD1306` library bug, not your wiring.
+
+The library has a `HAVE_PORTREG` fast path that pokes hardware registers
+directly instead of using `digitalWrite()` for the DC/CS/CLK/MOSI pins.
+It's enabled for any ARM board (`__arm__`), which includes the R4's
+Renesas core - but the direct register writes don't work correctly there,
+so those pins silently never toggle. `display.begin()` still returns
+`true` because SPI has no way to detect a non-responding device, so it
+fails silently.
+
+**Fix:** in your installed copy of `Adafruit_SSD1306.h` (typically
+`~/Documents/Arduino/libraries/Adafruit_SSD1306/Adafruit_SSD1306.h`),
+find the `#elif (defined(__arm__) ...)` block guarding `HAVE_PORTREG`
+and add `&& !defined(ARDUINO_ARCH_RENESAS)` to its condition, so it reads:
+
+```cpp
+#elif (defined(__arm__) || defined(ARDUINO_FEATHER52)) &&                      \
+    !defined(ARDUINO_ARCH_MBED) && !defined(ARDUINO_ARCH_RP2040) &&            \
+    !defined(ARDUINO_ARCH_RENESAS)
+```
+
+This is a global library file, not part of this repo, so the fix won't
+survive a library reinstall/update - if the blank-screen issue comes back
+after updating the library, re-apply it. See the original report on the
+[Arduino Forum](https://forum.arduino.cc/t/adafruit-oleds-wont-work-on-r4-ok-on-r3/1180549).

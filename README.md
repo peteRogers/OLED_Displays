@@ -1,8 +1,7 @@
 # OLED Displays
 
 A collection of Arduino sketches for driving small monochrome OLED screens
-(SSD1306, 128x64 and similar) - a good place to start if you've never talked
-to one of these before.
+(SSD1306, 128x64 and similar)
 
 ## Getting started
 
@@ -86,27 +85,20 @@ Text uses the library's built-in 5x7 pixel font unless you load a custom one
 - see the [u8g2 font list](https://github.com/olikraus/u8g2/wiki/fntlist8)
 below for more variety.
 
-### Bitmaps
-
-| Function | Draws | Example |
-|---|---|---|
-| `drawBitmap(x, y, bitmap, w, h, color)` | A monochrome image from a `PROGMEM` byte array | `display.drawBitmap(0, 0, myBitmap, 16, 16, WHITE);` |
-
-Turn any image into a bitmap array with [image2cpp](https://javl.github.io/image2cpp/),
-or grab ready-made animated icons from the [WOKWI animator](https://animator.wokwi.com/).
-
 ## Reference & tools
 
 - [Adafruit GFX library documentation (PDF)](https://cdn-learn.adafruit.com/downloads/pdf/adafruit-gfx-graphics-library.pdf) - the full API this repo is built on.
-- [image2cpp](https://javl.github.io/image2cpp/) - convert an image into a bitmap array for `drawBitmap()`.
-- [WOKWI animator](https://animator.wokwi.com/) - ready-made animated icons/emoji for OLEDs.
+
 - [u8g2 font list](https://github.com/olikraus/u8g2/wiki/fntlist8) - alternative fonts you can use instead of the built-in one.
+
+- [Create Images and GIFS](https://peterogers.github.io/OLED_Displays/GIF_2_OLED_MAKER/) - tool to show images and gifs
 
 ## Once you've got the basics
 
 - [`VARIOUS_EXAMPLES/`](VARIOUS_EXAMPLES) - small, focused demos (bouncing balls, a sine wave, a distance sensor readout, QR codes, and more).
 - [`SHOWING_IMAGES/`](SHOWING_IMAGES) - animated GIFs and image playback.
 - [`TYPOGRAPHY/`](TYPOGRAPHY) - working with text and fonts in more depth.
+- [`GIF_2_OLED_MAKER/`](GIF_2_OLED_MAKER) - drop in any animated GIF and it converts it into the Arduino code/array data needed to play it back on the OLED. Try it live: [GIF to OLED Converter](https://peterogers.github.io/OLED_Displays/GIF_2_OLED_MAKER/).
 
 ---
 

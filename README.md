@@ -93,12 +93,6 @@ below for more variety.
 
 - [Create Images and GIFS](https://peterogers.github.io/OLED_Displays/GIF_2_OLED_MAKER/) - tool to show images and gifs
 
-## Once you've got the basics
-
-- [`VARIOUS_EXAMPLES/`](VARIOUS_EXAMPLES) - small, focused demos (bouncing balls, a sine wave, a distance sensor readout, QR codes, and more).
-- [`SHOWING_IMAGES/`](SHOWING_IMAGES) - animated GIFs and image playback.
-- [`TYPOGRAPHY/`](TYPOGRAPHY) - working with text and fonts in more depth.
-- [`GIF_2_OLED_MAKER/`](GIF_2_OLED_MAKER) - drop in any animated GIF and it converts it into the Arduino code/array data needed to play it back on the OLED. Try it live: [GIF to OLED Converter](https://peterogers.github.io/OLED_Displays/GIF_2_OLED_MAKER/).
 
 ---
 

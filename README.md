@@ -6,12 +6,7 @@ to one of these before.
 
 ## Getting started
 
-- **I2C wiring** (2 signal wires: SDA + SCL, plus power/ground) - start with
-  [`OLED_STARTER/OLED_STARTER.ino`](OLED_STARTER/OLED_STARTER.ino).
-- **SPI wiring** (more wires, faster) - start with
-  [`OLED_spi/OLED_spi.ino`](OLED_spi/OLED_spi.ino).
-
-Both need the [Adafruit_SSD1306](https://github.com/adafruit/Adafruit_SSD1306)
+Need the [Adafruit_SSD1306](https://github.com/adafruit/Adafruit_SSD1306)
 and [Adafruit_GFX](https://github.com/adafruit/Adafruit-GFX-Library) libraries
 installed via the Arduino Library Manager.
 

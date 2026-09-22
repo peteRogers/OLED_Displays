@@ -60,7 +60,12 @@ function growOrShrinkGrid(grid, width, height, grow) {
 
 function processGifFrame() {
 
-  gif.setFrame(startFrame + frameNum); // frameNum is 0-based output index; startFrame (sketch.js) offsets into the source GIF
+  // Static images (PNG/JPG) have no gifProperties/setFrame support -- only
+  // animated GIFs need their frame advanced. frameNum is 0-based output
+  // index; startFrame (sketch.js) offsets into the source GIF.
+  if (gif.numFrames && gif.numFrames() > 1) {
+    gif.setFrame(startFrame + frameNum);
+  }
 
   // Draw the current crop rectangle of this frame into the 128x64 sample
   // buffer (cropBuffer + computeCropRectSourceSpace live in sketch.js),

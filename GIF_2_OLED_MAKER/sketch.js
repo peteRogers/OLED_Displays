@@ -63,7 +63,7 @@ function handleFile() {
   if (currentUrl) URL.revokeObjectURL(currentUrl);
   currentUrl = URL.createObjectURL(file);
 
-  select("#status").html("Loading GIF...");
+  select("#status").html("Loading image...");
   select("#copyBtn").attribute("disabled", "");
   select("#output").elt.value = "";
   select("#sourceImg").elt.src = currentUrl;
@@ -78,8 +78,13 @@ function handleFile() {
       cropX1 = gif.width;
       cropY1 = gif.height;
 
+      // Static images (PNG/JPG) have no gifProperties, so numFrames()
+      // returns undefined -- treat those as a single frame.
+      let sourceFrames = gif.numFrames ? gif.numFrames() : undefined;
+      let totalFrames = sourceFrames && sourceFrames > 0 ? sourceFrames : 1;
+
       startFrame = 0;
-      endFrame = gif.numFrames() - 1;
+      endFrame = totalFrames - 1;
       let startSlider = select("#startFrameSlider").elt;
       let endSlider = select("#endFrameSlider").elt;
       startSlider.max = endFrame;
@@ -94,7 +99,7 @@ function handleFile() {
       startProcessing();
     },
     () => {
-      select("#status").html("Failed to load that GIF.");
+      select("#status").html("Failed to load that image.");
     }
   );
 }
@@ -107,7 +112,7 @@ function updateSourceWrapperSize() {
   if (!gif) return;
   let wrapper = select("#source-wrapper").elt;
   let maxW = wrapper.parentElement.getBoundingClientRect().width;
-  let maxH = 160;
+  let maxH = 400;
   let scale = Math.min(maxW / gif.width, maxH / gif.height);
   wrapper.style.width = gif.width * scale + "px";
   wrapper.style.height = gif.height * scale + "px";

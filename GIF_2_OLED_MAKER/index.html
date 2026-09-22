@@ -6,16 +6,16 @@
     <script src="saveGifToArray.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
     <meta charset="utf-8" />
-    <title>GIF to OLED Converter</title>
+    <title>Image/GIF to OLED Converter</title>
   </head>
   <body>
     <main>
-      <h1>GIF &rarr; OLED Converter</h1>
+      <h1>Image/GIF &rarr; OLED Converter</h1>
 
       <div class="controls">
         <div class="row">
           <label class="file-label">
-            GIF: <input type="file" id="gifInput" accept=".gif,image/gif">
+            Image or GIF: <input type="file" id="gifInput" accept=".gif,image/gif,.png,.jpg,.jpeg,image/png,image/jpeg">
           </label>
           <label class="invert-label">
             <input type="checkbox" id="invertCheckbox" checked>
@@ -46,13 +46,13 @@
         </div>
       </div>
 
-      <p id="status">Choose a GIF to begin.</p>
+      <p id="status">Choose an image or GIF to begin.</p>
 
       <div class="preview-row">
         <div class="preview-col">
           <p class="preview-label">Source (drag box to move, drag corners to resize/reshape)</p>
           <div id="source-wrapper">
-            <img id="sourceImg" alt="Source GIF">
+            <img id="sourceImg" alt="Source image">
             <div id="cropRect">
               <div class="handle" data-corner="tl"></div>
               <div class="handle" data-corner="tr"></div>

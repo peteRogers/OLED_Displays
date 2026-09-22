@@ -22,9 +22,13 @@
 // &SPI = use the board's hardware SPI peripheral, clocked at 8MHz.
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &SPI, OLED_DC, OLED_RST, OLED_CS, 8000000UL);
 
-float phase = 0;        // shifts the wave sideways each frame, creating motion
-float amplitude = 20;   // how tall the wave is, in pixels
-float frequency = 0.15; // how many wave cycles fit across the screen
+float phase = 0; // shifts the wave sideways each frame, creating motion
+
+// amplitude and frequency both breathe between these limits, in sync with speed
+const float minSpeed = 0.05,     maxSpeed = 0.6;   // phase step per frame
+const float minAmplitude = 8,    maxAmplitude = 28; // wave height, in pixels
+const float minFrequency = 0.08, maxFrequency = 0.3; // wave cycles per pixel
+const float cycleSeconds = 5.0;  // one full slow->fast->slow lap
 
 void setup() {
   Serial.begin(9600);
@@ -37,6 +41,16 @@ void setup() {
 }
 
 void loop() {
+  // Where we are in one slow->fast->slow lap (0..1), from wall-clock time so
+  // it stays smooth regardless of how long each frame takes to draw.
+  unsigned long msIntoCycle = millis() % (unsigned long)(cycleSeconds * 1000);
+  float t = msIntoCycle / 1000.0; // 0..cycleSeconds
+  float speedFactor = (sin(2 * PI * t / cycleSeconds - HALF_PI) + 1) / 2; // 0..1
+
+  float speed = minSpeed + speedFactor * (maxSpeed - minSpeed);
+  float amplitude = minAmplitude + speedFactor * (maxAmplitude - minAmplitude);
+  float frequency = minFrequency + speedFactor * (maxFrequency - minFrequency);
+
   display.clearDisplay();
 
   int previousY = SCREEN_HEIGHT / 2;
@@ -49,6 +63,7 @@ void loop() {
   }
 
   display.display();
-  phase += 0.4;   // same fast pacing as the I2C version, to compare directly
+
+  phase += speed;
   delay(10);
 }

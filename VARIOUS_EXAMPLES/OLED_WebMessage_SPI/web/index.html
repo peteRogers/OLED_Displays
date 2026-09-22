@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.1/p5.js"></script>
+    <script src="arduinoSerial.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8" />
+    <title>OLED Message Sender</title>
+  </head>
+  <body>
+    <main>
+      <h1>Type directly on the OLED</h1>
+
+      <div class="controls">
+        <div class="row">
+          <button id="clearBtn">Clear screen</button>
+        </div>
+      </div>
+
+      <div id="canvas-container"></div>
+    </main>
+    <script src="sketch.js"></script>
+  </body>
+</html>

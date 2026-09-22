@@ -1,214 +1,117 @@
 # OLED Displays
 
-#### Wiring Labelling for OLED
-![alt text](i2cGraphic.jpg "i2c graphics")
+A collection of Arduino sketches for driving small monochrome OLED screens
+(SSD1306, 128x64 and similar) - a good place to start if you've never talked
+to one of these before.
 
+## Getting started
 
-# Adafruit GFX Library Drawing Functions
+- **I2C wiring** (2 signal wires: SDA + SCL, plus power/ground) - start with
+  [`OLED_STARTER/OLED_STARTER.ino`](OLED_STARTER/OLED_STARTER.ino).
+- **SPI wiring** (more wires, faster) - start with
+  [`OLED_spi/OLED_spi.ino`](OLED_spi/OLED_spi.ino).
 
-The Adafruit GFX library provides versatile functions for drawing shapes and text on various graphical displays. Below are the descriptions and usage instructions for each drawing function.
+Both need the [Adafruit_SSD1306](https://github.com/adafruit/Adafruit_SSD1306)
+and [Adafruit_GFX](https://github.com/adafruit/Adafruit-GFX-Library) libraries
+installed via the Arduino Library Manager.
 
----
+## How a sketch is put together
 
-## 1. Drawing Lines
+Every sketch here follows the same shape:
 
-### `drawLine(x0, y0, x1, y1, color)`
-- **Description**: Draws a straight line from point `(x0, y0)` to `(x1, y1)`.
-- **Parameters**:
-  - `x0, y0`: Starting point of the line.
-  - `x1, y1`: Ending point of the line.
-  - `color`: The color of the line.
-- **Example**:
-```Arduino
-  display.drawLine(0, 0, 100, 50, WHITE);
-  ```
+```cpp
+void setup() {
+  display.begin(...);   // wake the screen up, once
+}
 
----
+void loop() {
+  display.clearDisplay();                 // 1. wipe the screen's memory (not visible yet)
+  display.drawCircle(64, 32, 20, WHITE);   // 2. draw whatever you want
+  display.display();                      // 3. push it all to the actual screen
+}
+```
 
-## 2. Drawing Rectangles
+Nothing you draw actually appears until you call `display.display()` -
+everything before that just builds up a picture in memory. That's normal: it
+lets you draw a whole frame (background, shapes, text) before it's shown, so
+the screen never flashes a half-drawn frame.
 
-### `drawRect(x, y, w, h, color)`
-- **Description**: Draws a rectangle outline with the top-left corner at `(x, y)`.
-- **Parameters**:
-  - `x, y`: Top-left corner coordinates.
-  - `w, h`: Width and height of the rectangle.
-  - `color`: The color of the rectangle outline.
-- **Example**:
-```Arduino
-  display.drawRect(10, 10, 50, 30, BLUE);
-  ```
+### The coordinate system
 
-### `fillRect(x, y, w, h, color)`
-- **Description**: Draws a filled rectangle with the top-left corner at `(x, y)`.
-- **Parameters**:
-  - `x, y`: Top-left corner coordinates.
-  - `w, h`: Width and height of the rectangle.
-  - `color`: The color of the rectangle.
-- **Example**:
-```Arduino
-  display.fillRect(20, 20, 40, 20, GREEN);
-  ```
+`(0, 0)` is the **top-left** corner. `x` increases to the right, `y`
+increases downward. A 128x64 display is 128 pixels wide and 64 tall, so its
+bottom-right pixel is `(127, 63)`.
 
----
+### Colour
 
-## 3. Drawing Circles
+These are monochrome displays - every pixel is simply on or off. There's no
+red/green/blue here, only:
 
-### `drawCircle(x, y, r, color)`
-- **Description**: Draws a circle outline centered at `(x, y)` with radius `r`.
-- **Parameters**:
-  - `x, y`: Center of the circle.
-  - `r`: Radius of the circle.
-  - `color`: The color of the circle outline.
-- **Example**:
-```Arduino
-  display.drawCircle(60, 60, 30, RED);
-  ```
+- `WHITE` - turn the pixel on
+- `BLACK` - turn the pixel off (handy for erasing)
+- `INVERSE` - flip whatever's already there
 
-### `fillCircle(x, y, r, color)`
-- **Description**: Draws a filled circle centered at `(x, y)` with radius `r`.
-- **Parameters**:
-  - Same as `drawCircle`.
-- **Example**:
-```Arduino
-  display.fillCircle(80, 80, 20, YELLOW);
-  ```
+If you spot example code elsewhere using colours like `RED` or `BLUE`, that's
+written for a different, full-colour display - it won't compile against this
+library.
 
----
+## Drawing functions (Adafruit_GFX)
 
-## 4. Drawing Rounded Rectangles
+All of these are called on your `display` object, e.g. `display.drawPixel(...)`.
 
-### `drawRoundRect(x, y, w, h, r, color)`
-- **Description**: Draws a rectangle with rounded corners.
-- **Parameters**:
-  - `x, y`: Top-left corner of the rectangle.
-  - `w, h`: Width and height of the rectangle.
-  - `r`: Radius of the rounded corners.
-  - `color`: The color of the rectangle outline.
-- **Example**:
-```Arduino
-  display.drawRoundRect(30, 30, 60, 40, 10, MAGENTA);
-  ```
+### Shapes
 
-### `fillRoundRect(x, y, w, h, r, color)`
-- **Description**: Draws a filled rectangle with rounded corners.
-- **Parameters**:
-  - Same as `drawRoundRect`.
-- **Example**:
-```Arduino
-  display.fillRoundRect(40, 40, 50, 30, 8, CYAN);
-  ```
+| Function | Draws | Example |
+|---|---|---|
+| `drawPixel(x, y, color)` | A single pixel | `display.drawPixel(10, 10, WHITE);` |
+| `drawLine(x0, y0, x1, y1, color)` | A line between two points | `display.drawLine(0, 0, 100, 50, WHITE);` |
+| `drawRect(x, y, w, h, color)` | Rectangle outline | `display.drawRect(10, 10, 50, 30, WHITE);` |
+| `fillRect(x, y, w, h, color)` | Filled rectangle | `display.fillRect(20, 20, 40, 20, WHITE);` |
+| `drawRoundRect(x, y, w, h, r, color)` | Rectangle with rounded corners of radius `r` | `display.drawRoundRect(30, 30, 60, 40, 10, WHITE);` |
+| `fillRoundRect(x, y, w, h, r, color)` | Filled version of the above | `display.fillRoundRect(40, 40, 50, 30, 8, WHITE);` |
+| `drawCircle(x, y, r, color)` | Circle outline, centred at `(x, y)` | `display.drawCircle(60, 32, 20, WHITE);` |
+| `fillCircle(x, y, r, color)` | Filled circle | `display.fillCircle(80, 32, 15, WHITE);` |
+| `drawTriangle(x0,y0, x1,y1, x2,y2, color)` | Triangle outline from 3 points | `display.drawTriangle(20,20, 50,20, 35,50, WHITE);` |
+| `fillTriangle(x0,y0, x1,y1, x2,y2, color)` | Filled triangle | `display.fillTriangle(25,25, 60,25, 45,60, WHITE);` |
 
----
+There's no built-in ellipse - fake one with a squashed circle, or layer a few
+`drawCircle()` calls of different radii.
 
-## 5. Drawing Triangles
+### Text
 
-### `drawTriangle(x0, y0, x1, y1, x2, y2, color)`
-- **Description**: Draws a triangle outline using three vertices.
-- **Parameters**:
-  - `x0, y0`: First vertex.
-  - `x1, y1`: Second vertex.
-  - `x2, y2`: Third vertex.
-  - `color`: The color of the triangle outline.
-- **Example**:
-```Arduino
-  display.drawTriangle(20, 20, 50, 20, 35, 50, ORANGE);
-  ```
+| Function | Does | Example |
+|---|---|---|
+| `setCursor(x, y)` | Moves the text cursor - call this before printing | `display.setCursor(10, 10);` |
+| `setTextSize(size)` | Scales text up; `1` is the smallest (~6x8px per character) | `display.setTextSize(2);` |
+| `setTextColor(color)` / `setTextColor(color, bg)` | Sets the text colour, optionally with a background fill | `display.setTextColor(WHITE, BLACK);` |
+| `setTextWrap(bool)` | Whether long text wraps onto the next line | `display.setTextWrap(true);` |
+| `print("text")` / `println("text")` | Draws text at the cursor; `println` also moves to the next line | `display.print("Hello!");` |
 
-### `fillTriangle(x0, y0, x1, y1, x2, y2, color)`
-- **Description**: Draws a filled triangle using three vertices.
-- **Parameters**:
-  - Same as `drawTriangle`.
-- **Example**:
-```Arduino
-  display.fillTriangle(25, 25, 60, 25, 45, 60, PURPLE);
-  ```
+Text uses the library's built-in 5x7 pixel font unless you load a custom one
+- see the [u8g2 font list](https://github.com/olikraus/u8g2/wiki/fntlist8)
+below for more variety.
 
----
+### Bitmaps
 
-## 6. Drawing Pixels
+| Function | Draws | Example |
+|---|---|---|
+| `drawBitmap(x, y, bitmap, w, h, color)` | A monochrome image from a `PROGMEM` byte array | `display.drawBitmap(0, 0, myBitmap, 16, 16, WHITE);` |
 
-### `drawPixel(x, y, color)`
-- **Description**: Draws a single pixel at `(x, y)`.
-- **Parameters**:
-  - `x, y`: Coordinates of the pixel.
-  - `color`: The color of the pixel.
-- **Example**:
-```Arduino
-  display.drawPixel(10, 10, WHITE);
-  ```
+Turn any image into a bitmap array with [image2cpp](https://javl.github.io/image2cpp/),
+or grab ready-made animated icons from the [WOKWI animator](https://animator.wokwi.com/).
 
----
+## Reference & tools
 
-## 7. Drawing Ellipses *(Approximation with Circles)*
+- [Adafruit GFX library documentation (PDF)](https://cdn-learn.adafruit.com/downloads/pdf/adafruit-gfx-graphics-library.pdf) - the full API this repo is built on.
+- [image2cpp](https://javl.github.io/image2cpp/) - convert an image into a bitmap array for `drawBitmap()`.
+- [WOKWI animator](https://animator.wokwi.com/) - ready-made animated icons/emoji for OLEDs.
+- [u8g2 font list](https://github.com/olikraus/u8g2/wiki/fntlist8) - alternative fonts you can use instead of the built-in one.
 
-The library does not directly support ellipses but you can simulate ellipses using successive `drawCircle` calls with varying radii.
+## Once you've got the basics
 
----
-
-## 8. Drawing Text
-
-### `setCursor(x, y)`
-- **Description**: Sets the cursor position for text rendering.
-- **Parameters**:
-  - `x, y`: Coordinates for the text cursor.
-- **Example**:
-```Arduino
-  display.setCursor(10, 10);
-  ```
-
-### `setTextColor(color)`
-- **Description**: Sets the text color. Optionally, you can provide a background color.
-- **Parameters**:
-  - `color`: Text color.
-  - *(Optional)* `bg`: Background color.
-- **Example**:
-```Arduino
-  display.setTextColor(RED, BLACK);
-  ```
-
-### `setTextSize(size)`
-- **Description**: Sets the size of the text. Default is `1` (smallest size).
-- **Parameters**:
-  - `size`: Scale factor for the text.
-- **Example**:
-```Arduino
-  display.setTextSize(2);
-  ```
-
-### `print("text")` / `println("text")`
-- **Description**: Prints text on the screen. Use `println` for a new line after text.
-- **Parameters**:
-  - `"text"`: The text to display.
-- **Example**:
-```Arduino
-  display.print("Hello, World!");
-  ```
-
----
-
-## 9. Custom Functions
-
-### `drawBitmap(x, y, bitmap, w, h, color)`
-- **Description**: Draws a monochrome bitmap starting at `(x, y)`.
-- **Parameters**:
-  - `x, y`: Top-left corner of the bitmap.
-  - `bitmap`: Pointer to the bitmap data.
-  - `w, h`: Width and height of the bitmap.
-  - `color`: Foreground color of the bitmap.
-- **Example**:
-```Arduino
-  display.drawBitmap(0, 0, myBitmap, 16, 16, WHITE);
-  ```
-
----
-#### Here are files supporting using OLED displays with Arduino.
-OLED uses the adafruit GFX library for doing drawing commands. [GFX Library Documentation](https://cdn-learn.adafruit.com/downloads/pdf/adafruit-gfx-graphics-library.pdf)
-
-Web link to convert images to show on screens [Make BITMAP IMAGES](https://javl.github.io/image2cpp/)
-
-Get animated icons and emojis to show on OLED [WOKWI animator](https://animator.wokwi.com/)
-
-List of u8g2 fonts [U8G2 fonts](https://github.com/olikraus/u8g2/wiki/fntlist8)
+- [`VARIOUS_EXAMPLES/`](VARIOUS_EXAMPLES) - small, focused demos (bouncing balls, a sine wave, a distance sensor readout, QR codes, and more).
+- [`SHOWING_IMAGES/`](SHOWING_IMAGES) - animated GIFs and image playback.
+- [`TYPOGRAPHY/`](TYPOGRAPHY) - working with text and fonts in more depth.
 
 ---
 

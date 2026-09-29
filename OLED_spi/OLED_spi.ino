@@ -35,6 +35,6 @@ void setup() {
 
 void loop() {
   display.clearDisplay();
-  display.fillCircle(64, 32, 10);
+  display.fillCircle(64, 32, 10, WHITE);
   display.display();
 }//end loop function

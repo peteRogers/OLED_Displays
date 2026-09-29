@@ -35,9 +35,6 @@ void setup() {
 
 void loop() {
   display.clearDisplay();
-  display.setTextSize(2);
-  display.setTextColor(WHITE);
-  display.setCursor(10, 10);
-  display.print("hello");
+  display.fillCircle(64, 32, 10);
   display.display();
 }//end loop function

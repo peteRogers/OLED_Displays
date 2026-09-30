@@ -1,41 +1,32 @@
-// Basic starter sketch for a 128x64 SPI OLED (SSD1306), using the board's
-// real hardware SPI peripheral rather than bit-banged software SPI (which
-// this file used to use - much slower, and pins arbitrary in a way that
-// doesn't reflect how the hardware actually works). See
-// VARIOUS_EXAMPLES/OLED_SineWave_SPI for more on why hardware SPI is
-// faster and avoids screen tearing at high frame rates.
-//
-// MOSI/SCK are fixed hardware SPI pins on the board (D11/D13 on an
-// UNO R4). DC, RST and CS can be any free digital pins - just match
-// these #defines to how you wired it.
 
+//importing Libraries
 #include <SPI.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-#define OLED_DC  9   // data/command select
-#define OLED_RST 8   // reset
-#define OLED_CS  10  // chip select
+//wiring for display
+#define OLED_DC  9   
+#define OLED_RST 8   
+#define OLED_CS  10  
 
-// &SPI = use the board's hardware SPI peripheral, clocked at 8MHz.
+//global variables
+int textSize = 3;  // change this to resize the text - scrolling adjusts to match
+char message[] = "start lalla la l al al END";
+int scrollDistance = strlen(message) * 6 * textSize - 128;  // text width minus screen width
+
+
 Adafruit_SSD1306 display(128, 64, &SPI, OLED_DC, OLED_RST, OLED_CS, 8000000UL);
 
 void setup() {
   Serial.begin(9600);
-
-  if (!display.begin(SSD1306_SWITCHCAPVCC)) {
-    Serial.println(F("SSD1306 allocation failed"));
-    for (;;)
-      ; // don't continue, the display didn't initialise
-  }
-
+  display.begin(SSD1306_SWITCHCAPVCC);
   display.clearDisplay();
 }//end setup function
 
 
 void loop() {
   display.clearDisplay();
-  display.fillCircle(64, 32, 10, WHITE);
+  display.fillCircle(64, 32, 20, WHITE);
   display.display();
 }//end loop function
 

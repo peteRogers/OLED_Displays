@@ -18,6 +18,8 @@ void setup() {
   Serial.begin(9600);
   display.begin(SSD1306_SWITCHCAPVCC);
   display.clearDisplay();
+  display.setTextColor(WHITE);
+  display.setTextSize(3);
 }//end setup function
 
 

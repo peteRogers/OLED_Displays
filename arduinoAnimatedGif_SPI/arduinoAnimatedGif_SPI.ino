@@ -34,10 +34,12 @@ void setup() {
 
 void loop() {
 
+  // currentFrame = map(analogRead(A0), 0, 1023, 0, totalFrames - 1); // sensor picks the frame
   functionArray[currentFrame]();
   currentFrame = currentFrame + incer;
   if (currentFrame == totalFrames - 1 || currentFrame < 1) {
-    incer = incer * -1;
+    //incer = incer * -1;
+    currentFrame = 0;
   }
   delay(20);
 

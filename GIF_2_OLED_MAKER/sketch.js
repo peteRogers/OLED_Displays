@@ -37,6 +37,7 @@ function setup() {
   select("#gifInput").changed(handleFile);
   select("#invertCheckbox").changed(handleSettingChange);
   select("#rotateCheckbox").changed(handleRotateChange);
+  selectAll("input[name=transparentColor]").forEach((r) => r.changed(handleTransparentChange));
   select("#thresholdSlider").input(handleThresholdChange);
   select("#thicknessSlider").input(handleThicknessChange);
   select("#startFrameSlider").input(handleStartFrameChange);
@@ -52,6 +53,7 @@ function setup() {
 
   invert = select("#invertCheckbox").elt.checked;
   rotate90 = select("#rotateCheckbox").elt.checked;
+  transparentLit = select("input[name=transparentColor]:checked").value() === "white";
   threshold = select("#thresholdSlider").elt.valueAsNumber;
   lineThickness = select("#thicknessSlider").elt.valueAsNumber;
 }
@@ -125,6 +127,11 @@ function handleSettingChange() {
 
 function handleRotateChange() {
   rotate90 = select("#rotateCheckbox").elt.checked;
+  if (gif) startProcessing(); // re-run with the new setting
+}
+
+function handleTransparentChange() {
+  transparentLit = select("input[name=transparentColor]:checked").value() === "white";
   if (gif) startProcessing(); // re-run with the new setting
 }
 

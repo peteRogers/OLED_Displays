@@ -41,6 +41,6 @@ void loop() {
     //incer = incer * -1;
     currentFrame = 0;
   }
-  delay(20);
+  delay(100);
 
 }//end loop

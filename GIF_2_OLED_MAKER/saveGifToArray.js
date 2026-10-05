@@ -17,6 +17,11 @@ var invert = true;
 // correctly on an OLED that's physically mounted in portrait.
 var rotate90 = false;
 
+// What transparent source pixels become on the OLED: true = lit (white),
+// false = off (black). Applied by filling the sample buffer before each
+// frame is drawn, so semi-transparent edges blend toward this color too.
+var transparentLit = false;
+
 // Brightness cutoff (0-255) between "off" and "lit" pixels.
 var threshold = 128;
 
@@ -71,6 +76,12 @@ function processGifFrame() {
   // buffer (cropBuffer + computeCropRectSourceSpace live in sketch.js),
   // then read pixels from that instead of the raw GIF.
   let { srcX, srcY, cropW, cropH } = computeCropRectSourceSpace();
+
+  // Clear to the chosen transparent color first -- otherwise transparent
+  // pixels show whatever the previous frame left in the buffer. The fill
+  // is picked in source space so it ends up lit/off as chosen regardless
+  // of the invert setting.
+  cropBuffer.background(transparentLit === invert ? 255 : 0);
 
   if (rotate90) {
     // Sample the crop into a portrait (height x width) rect centered on

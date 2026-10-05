@@ -38,7 +38,7 @@ h1 {
   gap: 6px 20px;
 }
 
-.file-label, .invert-label, .rotate-label, .threshold-label, .thickness-label, .frame-label {
+.file-label, .invert-label, .rotate-label, .transparent-label, .threshold-label, .thickness-label, .frame-label {
   display: flex;
   align-items: center;
   gap: 6px;

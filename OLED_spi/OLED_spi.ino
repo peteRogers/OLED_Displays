@@ -20,12 +20,14 @@ void setup() {
   display.clearDisplay();
   display.setTextColor(WHITE);
   display.setTextSize(3);
+  display.set
 }//end setup function
 
 
 void loop() {
+  int light = analogRead(A0);
   display.clearDisplay();
-  display.fillCircle(64, 32, 20, WHITE);
+  display.drawCircle(light/8, 32, 25, WHITE);
   display.display();
 }//end loop function
 

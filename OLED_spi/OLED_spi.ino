@@ -19,15 +19,14 @@ void setup() {
   display.begin(SSD1306_SWITCHCAPVCC);
   display.clearDisplay();
   display.setTextColor(WHITE);
-  display.setTextSize(3);
-  display.set
+  display.setTextSize(2);
+  
 }//end setup function
 
 
 void loop() {
-  int light = analogRead(A0);
   display.clearDisplay();
-  display.drawCircle(light/8, 32, 25, WHITE);
+  display.drawCircle(64, 32, 20, WHITE);
   display.display();
 }//end loop function
 

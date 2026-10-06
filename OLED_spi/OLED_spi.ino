@@ -19,15 +19,16 @@ void setup() {
   display.setTextColor(WHITE);
   display.setTextSize(2);
   display.setTextWrap(false);
-  display.setRotation(2);
+  //display.setRotation(2);
 }//end setup function
 
 
 void loop() {
+  int light = analogRead(A0);
   display.clearDisplay();//begin drawing
-
-  display.setCursor(0, 0);
-  display.print("hello");
+ display.fillCircle(54, 26, 10, SSD1306_WHITE);
+display.fillCircle(74, 26, 10, SSD1306_WHITE);
+display.fillTriangle(44, 26, 84, 26, 64, 51, SSD1306_WHITE);
 
   display.display();//send drawing to screen
 }//end loop function

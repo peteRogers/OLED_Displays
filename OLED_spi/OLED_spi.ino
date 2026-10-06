@@ -19,6 +19,7 @@ void setup() {
   display.setTextColor(WHITE);
   display.setTextSize(2);
   display.setTextWrap(false);
+  display.setRotation(2);
 }//end setup function
 
 

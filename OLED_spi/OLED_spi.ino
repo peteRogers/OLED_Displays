@@ -10,8 +10,6 @@
 #define OLED_CS  10  
 
 
-
-
 Adafruit_SSD1306 display(128, 64, &SPI, OLED_DC, OLED_RST, OLED_CS, 8000000UL);
 
 void setup() {
@@ -20,14 +18,17 @@ void setup() {
   display.clearDisplay();
   display.setTextColor(WHITE);
   display.setTextSize(2);
-  
+  display.setTextWrap(false);
 }//end setup function
 
 
 void loop() {
-  display.clearDisplay();
-  display.drawCircle(64, 32, 20, WHITE);
-  display.display();
+  display.clearDisplay();//begin drawing
+
+  display.setCursor(0, 0);
+  display.print("hello");
+
+  display.display();//send drawing to screen
 }//end loop function
 
 

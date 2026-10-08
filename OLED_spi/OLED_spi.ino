@@ -19,23 +19,29 @@ void setup() {
   display.setTextColor(WHITE);
   display.setTextSize(2);
   display.setTextWrap(false);
-  //display.setRotation(2);
+  display.setRotation(2);
 }//end setup function
 
 
 void loop() {
   int light = analogRead(A0);
   display.clearDisplay();//begin drawing
- display.fillCircle(54, 26, 10, SSD1306_WHITE);
-display.fillCircle(74, 26, 10, SSD1306_WHITE);
-display.fillTriangle(44, 26, 84, 26, 64, 51, SSD1306_WHITE);
-
+  display.setCursor(5, 5);//text size 2: each letter is 12px wide, 16px tall
+  display.print("Hello");
+  
   display.display();//send drawing to screen
 }//end loop function
 
 
 
 ////EXTRA FUNCTIONS
+
+//draws a heart; (x, y) is the center of the top of the heart (between the two bumps)
+void drawHeart(int16_t x, int16_t y, uint16_t color) {
+  display.fillCircle(x - 10, y, 10, color);
+  display.fillCircle(x + 10, y, 10, color);
+  display.fillTriangle(x - 20, y, x + 20, y, x, y + 25, color);
+}
 
 void drawEllipse(int16_t cx, int16_t cy, int16_t rx, int16_t ry, uint16_t color) {
   int16_t px = cx + rx, py = cy;
